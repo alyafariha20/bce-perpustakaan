@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservasi Buku</title>
+</head>
+<body>
+<p><a th:href="@{/pinjam}">Pinjam</a> | <a th:href="@{/buku}">Buku</a> | <a th:href="@{/anggota}">Anggota</a> | <a th:href="@{/stok}">Kelola Stok</a> | <a th:href="@{/reservasi}">Reservasi</a></p>
+<h1>Ajukan Reservasi</h1>
+<p>Anggota: <b th:text="${idAnggota}">A001</b></p>
+
+<p th:if="${sukses}" th:text="${sukses}" style="color:#1b7f3b">Sukses</p>
+<p th:if="${pesan}" th:text="${pesan}" style="color:#b00020">Pesan error</p>
+
+<div th:if="${buku}">
+    <p>Buku: <b th:text="${buku.judul}">Judul</b> (stok: <span th:text="${buku.stok}">0</span>)</p>
+    <form th:action="@{/reservasi}" method="post">
+        <input type="hidden" name="idBuku" th:value="${buku.idBuku}">
+        <button type="submit">Ajukan Reservasi</button>
+    </form>
+</div>
+
+<h2>Reservasi Saya</h2>
+<p th:if="${#lists.isEmpty(daftarReservasi)}">Belum ada reservasi.</p>
+<table border="1" th:unless="${#lists.isEmpty(daftarReservasi)}">
+    <tr><th>No. Reservasi</th><th>Buku</th><th>Tanggal</th><th>Status</th></tr>
+    <tr th:each="r : ${daftarReservasi}">
+        <td th:text="${r.idReservasi}">R0001</td>
+        <td th:text="${r.buku.judul}">Judul</td>
+        <td th:text="${r.tanggalReservasi}">2026-10-31</td>
+        <td th:text="${r.status}">MENUNGGU</td>
+    </tr>
+</table>
+
+<hr>
+<a th:href="@{/pinjam}">Kembali</a>
+</body>
+</html>
